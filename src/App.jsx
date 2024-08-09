@@ -3,6 +3,7 @@ import './App.css'
 import { HomePage } from './pages'
 import BottomNavbar from './components/Bottomnavbar'
 import ProfileActionbar from './components/ProfileActionbar'
+import Profileviewpage from './pages/Profileviewpage'
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
        <Route 
       path="/profileaction" 
       element={<ProfileActionbar />}
+      />
+<Route 
+      path="/profileview" 
+      element={<Profileviewpage />}
       />
     </Routes>
     </BrowserRouter>
