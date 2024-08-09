@@ -13,14 +13,7 @@ function App() {
       path="/" 
       element={<HomePage />}
       />
-       <Route 
-      path="/bottombar" 
-      element={<BottomNavbar />}
-      />
-       <Route 
-      path="/profileaction" 
-      element={<ProfileActionbar />}
-      />
+      
 <Route 
       path="/profileview" 
       element={<Profileviewpage />}
