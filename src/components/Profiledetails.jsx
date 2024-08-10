@@ -3,10 +3,10 @@ import React from 'react'
 function Profiledetails() {
   return (
     <div >
-      <div className='bg-white rounded-t-lg  p-4 '  >
+      <div className='bg-white rounded-t-3xl  p-4 '  >
         <div className='bg-gray-400 p- rounded-full mx-auto' style={{width:'60px' ,padding:'2px'}}>
 
-        </div>
+    </div>
     <div className='overflow-y-auto pb-8'>
     <div>
     <span className='text-gray-600'>About</span>
