@@ -6,14 +6,19 @@ import Profiledetails from '../components/Profiledetails';
 function Profileviewpage() {
   return (
     <div className=" ">
-      <div className="container   w-fit  mx-auto " >
+      <div className="container  w-fit  mx-auto " >
         {/* Content of your profile page */}
-            <div className='' style={{
-            backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(128, 0, 128, 0.6)), url(https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?q=80&w=1856&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
-            backgroundSize:'cover',
-            backgroundPosition:'center',
-            // backgroundAttachment: 'fixed',
-            }}>
+        <div
+          className=""
+          style={{
+            background: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(128, 0, 128, 0.6)), url(https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?q=80&w=1856&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D) `,
+            backgroundSize: 'cover',
+            backgroundPosition: 'bottom',
+          }}
+        >
+                <div>
+                    <img src="" alt="" />
+                </div>
 
                     <div className='flex p-2  justify-between mt-'>
                     <div  className='rounded-full backdrop-filter backdrop-blur-sm bg-opacity-45 border-2 w-fit border-white p-2 text-white'>
@@ -36,10 +41,10 @@ function Profileviewpage() {
                     Match            </span>
                     </div>
                     </div> 
-
-                    <div className='mt-10'>
+                    <div className='mt-10 '>
                     <Profiledetails />
                     </div> 
+                    
             </div>
            
 </div>
