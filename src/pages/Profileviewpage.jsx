@@ -29,7 +29,7 @@ function Profileviewpage() {
                     </div>
                     </div> 
                     
-                    <div className='mt-32 flex gap-10 p- flex-wrap justify-center items-center'>
+                    <div className='mt-32 flex gap-10 p-2 flex-wrap justify-center items-center'>
                     <div className='text-center'>
                     <span className='text-3xl text-white text-center'> Alfredo Calzoni, 20  </span> <br />
                     <span className='text-sm text-gray-300 '> HAMBURG, GERMANY</span>
