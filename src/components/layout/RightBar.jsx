@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { LogOut } from 'lucide-react';
 import UserIcon from '../usericons/UserIcon';
 import UserPreview from '../usericons/UserPreview';
@@ -59,7 +59,7 @@ const RightBar = () => {
         </li>
       </ul>
     </div>
-  )
+  );
 }
 
 export default RightBar;

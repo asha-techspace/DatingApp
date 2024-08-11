@@ -1,7 +1,6 @@
-import React from "react";
-import { LeftBar, RightBar } from "../Components";
-import { Outlet } from "react-router-dom";
+import { LeftBar } from "../Components";
 import { HomePage } from "../pages";
+import {RightBar} from "../Components";
 
 const DesktopLayout = () => {
   return (
