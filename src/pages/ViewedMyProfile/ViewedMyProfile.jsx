@@ -2,6 +2,7 @@ import React from "react";
 import { UserPreview } from "../../Components";
 import { Search } from "lucide-react";
 import PageTitle from "../../components/PageTitle/PageTitle";
+import { Userdata } from "../../datas/Userdata";
 
 function ViewedMyProfile() {
   return (
@@ -15,48 +16,18 @@ function ViewedMyProfile() {
             fav={true}
             close={true}
           />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            fav={true}
-            close={true}
-          />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            fav={true}
-            close={true}
-          />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            fav={true}
-            close={true}
-          />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            fav={true}
-            close={true}
-          />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            fav={true}
-            close={true}
-          />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            phonecall={true}
-            video={true}
-          />
-          <UserPreview
-            name={"Afrin Sabilla"}
-            bio={"Life is not beautifull"}
-            phonecall={true}
-            video={true}
-          />
+         {Userdata.map((user) => {
+          return (
+            <UserPreview
+              key={user.id}
+              url={user.img}
+              name={user.firstName + user.lastName}
+              bio={"Life is beautifull"}
+              fav={true}
+              close={true}
+            />
+          );
+        })}
         </div>
       </div>
     </div>
