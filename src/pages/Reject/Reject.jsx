@@ -3,6 +3,7 @@ import PageTitle from '../../components/PageTitle/PageTitle';
 import { UserPreview } from '../../Components';
 import { Search } from 'lucide-react';
 import { Userdata } from '../../datas/Userdata';
+import BottomNavbar from '../../components/BottomNavbar';
 
 function Reject() {
   return (
@@ -22,6 +23,7 @@ function Reject() {
           })}
         </div>
       </div>
+      <BottomNavbar/>
     </div>
   );
 }

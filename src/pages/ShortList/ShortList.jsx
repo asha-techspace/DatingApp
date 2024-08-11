@@ -3,6 +3,7 @@ import { UserPreview } from "../../Components";
 import { Search } from "lucide-react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { Userdata } from "../../datas/Userdata";
+import BottomNavbar from "../../components/BottomNavbar";
 function ShortList() {
   return (
     <div>
@@ -23,6 +24,7 @@ function ShortList() {
           })}
         </div>
       </div>
+      <BottomNavbar/>
     </div>
   );
 }

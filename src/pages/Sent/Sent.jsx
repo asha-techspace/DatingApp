@@ -3,6 +3,7 @@ import PageTitle from '../../components/PageTitle/PageTitle'
 import { Search } from 'lucide-react'
 import { UserPreview } from '../../Components';
 import { Userdata } from '../../datas/Userdata';
+import BottomNavbar from '../../components/BottomNavbar';
 
 function Sent() {
   return (
@@ -21,6 +22,7 @@ function Sent() {
           );
         })}
       </div>
+      <BottomNavbar/>
     </div>
   );
 }

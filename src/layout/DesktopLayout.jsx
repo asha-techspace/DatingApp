@@ -9,7 +9,7 @@ const DesktopLayout = () => {
         <LeftBar />
       </aside>
 
-      <main className="w-full relative sm:w-3/5 sm:px-10 lg:px-40 bg-white">
+      <main className="w-full relative sm:w-3/5 sm:px-5 lg:px-20 xl:px-40 bg-white">
         <HomePage />
       </main>
 
