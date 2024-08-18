@@ -81,10 +81,10 @@ const LoginPage = () => {
                         <button type="submit" className="w-full py-2 bg-black text-white rounded-lg hover:bg-gray-600">Log In</button>
                     </form>
                     <div className="mt-4 text-center">
-                        <a href="#" className="text-sm text-black hover:underline">Forgot password?</a>
+                        <Link to="/forgot-password" className="text-sm text-black hover:underline">Forgot password?</Link>
                     </div>
                     <div className="mt-2 text-center">
-                        <Link href="#" className="text-sm text-black hover:underline" to="/sign_up">Don't have an account? Sign Up</Link>
+                        <Link  className="text-sm text-black hover:underline" to="/sign_up">Don't have an account? Sign Up</Link>
                     </div>
                 </div>
             </div>

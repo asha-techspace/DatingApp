@@ -31,7 +31,8 @@ import {
   Story,
   SpinPage,
   AddCreditCard,
-  PartnerPreferances
+  PartnerPreferances,
+  ForgotPasswordPage
 } from './pages';
 import DesktopLayout from './layout/DesktopLayout';
 import Profileviewpage from './pages/Profileviewpage';
@@ -104,6 +105,7 @@ function App() {
         <Route path='/personal_details' element={<PersonalDetails />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/sign_up' element={<SignUp />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
         <Route path='/' element={<LandingPage />} />
       </Routes>
       <BottomNavbar show={true} hideOnRoutes={hideOnRoutes} />

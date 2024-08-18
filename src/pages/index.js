@@ -32,6 +32,7 @@ import ChangePassword from "../components/forms/ChangePassword.jsx";
 import SortFilter from "./SortFilter.jsx";
 import PartnerPreferances from "./PartnerPreferances.jsx";
 import Groups from "./groups/Groups.jsx"
+import ForgotPasswordPage from "./ForgotPasswordPage.jsx";
 
 
 export {
@@ -69,5 +70,6 @@ export {
     Profileviewpage,
     ChangePassword,
     Groups,
+    ForgotPasswordPage,
 };
 
