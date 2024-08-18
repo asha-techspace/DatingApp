@@ -157,22 +157,22 @@ export const Userdata = [
     message: "How was the trip?",
     likes: "41"
   },
-  {
-    id: "10",
-    hobbies: ["Running", "Traveling", "Gaming"],
-    interests: ["Technology", "Fitness", "Movies"],
-    gender: "Male",
-    place: "BOSTON",
-    img: "https://clubcorvettemontreal.com/news/img-m_p/profile-pictures-for-men_19_187990.jpg",
-    distance: "2.1",
-    firstName: "Max",
-    lastName: "Smith",
-    age: "24",
-    isOnline: true,
-    match: "80",
-    job: "DEVELOPER",
-    bio: "Fitness fanatic 💪",
-    message: "how was the interview?",
-    likes: "68"
-  }
+  // {
+  //   id: "10",
+  //   hobbies: ["Running", "Traveling", "Gaming"],
+  //   interests: ["Technology", "Fitness", "Movies"],
+  //   gender: "Male",
+  //   place: "BOSTON",
+  //   img: "https://clubcorvettemontreal.com/news/img-m_p/profile-pictures-for-men_19_187990.jpg",
+  //   distance: "2.1",
+  //   firstName: "Max",
+  //   lastName: "Smith",
+  //   age: "24",
+  //   isOnline: true,
+  //   match: "80",
+  //   job: "DEVELOPER",
+  //   bio: "Fitness fanatic 💪",
+  //   message: "how was the interview?",
+  //   likes: "68"
+  // }
 ];
