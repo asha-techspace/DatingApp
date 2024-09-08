@@ -1,21 +1,20 @@
 import React,{useEffect,useState} from 'react';
-import { Userdata } from '../datas/Userdata';
-import { UserPreview } from '../components';
+import {UserPreview} from '../components';
 import PageTitle from '../components/PageTitle/PageTitle';
 import { Search } from 'lucide-react';
 import axios from 'axios';
 const RejectPage = () => {
 
-  const [requests, setRequests] = useState([]);
-  const[requestData,setRequestData] =useState([]);
+  const [rejectrequests, setRejectedRequests] = useState([]);
+  const[requestrejectedData,setRejectRequestData] =useState([]);
 
   useEffect(() => {
     const fetchRequestedLists = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/v1/users/user', { withCredentials: true });
 
-        const acceptedRequests = response.data[0].rejected;
-        setRequests(acceptedRequests);
+        const rejectedRequests = response.data[0].rejected;
+        setRejectedRequests(rejectedRequests);
 
       } catch (error) {
         console.log(error);
@@ -29,23 +28,23 @@ const RejectPage = () => {
 useEffect(()=>{
 const resposeData=async()=>{
   try{
- const users = requests.map(userId =>
+ const users = rejectrequests.map(userId =>
   axios.get(`http://localhost:5000/api/v1/users/profile/${userId}`)
  )
  const respostedata = await Promise.all(users)
  const allRequestedData = respostedata.map(data =>data.data)
-    setRequestData(allRequestedData)
+    setRejectRequestData(allRequestedData)
   }
   catch (error) {
     console.log(error);
   }
 }
 resposeData();
-console.log(requestData)
-},[requests])
+console.log(rejectrequests)
+},[rejectrequests])
 
   // Group users by the first letter of their first name
-  const groupedUsers = requestData.reduce((acc, user) => {
+  const groupedUsers = requestrejectedData.reduce((acc, user) => {
     const firstLetter = user.user.firstName.charAt(0).toUpperCase();
     if (!acc[firstLetter]) {
       acc[firstLetter] = [];
