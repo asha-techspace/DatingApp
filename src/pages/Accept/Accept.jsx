@@ -49,13 +49,13 @@ useEffect(()=>{
       <PageTitle icon={Search} pageTitle={"Accept"} />
       <div className="rounded-t-4xl h-[600px] overflow-y-scroll bg-white pt-5 px-5 pb-24 md:pb-5 sm:border-2 border-deep-plum">
         {acceptrequestData?.map(user => {
-            const name =user.user.firstName + " " +user. user.lastName;
+            const name =user?.user?.firstName + " " +user?. user?.lastName;
            return (
             <UserPreview
-            key={user.user._id}
+            key={user?.user._id}
             name={name}
-            url={user.profileImage.url}
-            bio={user.bio}
+            url={user?.profileImage.url}
+            bio={user?.bio}
             phonecall={true}
             video={true}
           />
