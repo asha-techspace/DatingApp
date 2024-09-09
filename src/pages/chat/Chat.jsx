@@ -1,3 +1,4 @@
+
 import { ArrowLeft, Mic, Paperclip, Send } from "lucide-react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { MdCall } from "react-icons/md";
@@ -6,12 +7,15 @@ import axios from "axios";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:5000");
 
-
-
 const Chat = () => {
   const [value, setValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [messageReceived, setMessageReceived] = useState("");
+
+  // Function to save messages to localStorage
+  const saveMessagesToLocalStorage = (messages) => {
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
+  };
 
   const sendMessage = async () => {
     try {
@@ -19,22 +23,25 @@ const Chat = () => {
       socket.emit("sendMessage", { value });
       // Call the API to send the message (if applicable)
       await axios.post(
-        `http://localhost:5000/api/v1/users/messages/send`, {
+        `http://localhost:5000/api/v1/users/messages/send`,
+        {
           message: value
         }
       );
-
-      
     } catch (error) {
       console.log(error.messages);
     }
 
     if (value.trim()) {
       // Add the new message to the messages list (with "sent" status)
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: value, time: new Date().toLocaleTimeString(), sent: true },
-      ]);
+      const updatedMessages = [
+        ...messages,
+        { text: value, time: new Date().toLocaleTimeString(), sent: true }
+      ];
+      setMessages(updatedMessages);
+
+      // Save the updated messages to localStorage
+      saveMessagesToLocalStorage(updatedMessages);
 
       // Clear the input field
       setValue("");
@@ -43,18 +50,31 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    // Listen for incoming messages
-    socket.on("getMessage", (data) => {
-      setMessageReceived(data.value);
+    // Retrieve messages from localStorage on component mount
+    const storedMessages = localStorage.getItem("chatMessages");
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
 
-      // Add the received message to the messages list (with "received" status)
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: data.value, time: new Date().toLocaleTimeString(), sent: false },
-      ]);
-    });
-    
-  }, [socket]);
+    // Listen for incoming messages
+    const handleMessage = (data) => {
+      const updatedMessages = [
+        ...messages,
+        { text: data.value, time: new Date().toLocaleTimeString(), sent: false }
+      ];
+      setMessages(updatedMessages);
+
+      // Save the received messages to localStorage
+      saveMessagesToLocalStorage(updatedMessages);
+    };
+
+    socket.on("getMessage", handleMessage);
+
+    // Cleanup the listener when the component unmounts
+    return () => {
+      socket.off("getMessage", handleMessage);
+    };
+  }, [messages]);
 
   return (
     <div className="relative bg-deep-plum h-screen overflow-y-auto">
