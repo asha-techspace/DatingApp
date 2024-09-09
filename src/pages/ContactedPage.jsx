@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 import axios from 'axios';
 const ContactedPage = () => {
 
-    const [requests, setRequests] = useState([]);
+    const[requestsId, setRequestsId] = useState([]);
     const[requestData,setRequestData] =useState([]);
   
     useEffect(() => {
@@ -18,11 +18,12 @@ const ContactedPage = () => {
           const pendingRequests = friendRequests.filter(request => request.status === 'pending');
           // Extract the 'from' fields from the friendRequests array
           const fromArray = pendingRequests.map(request => request.from)
-          setRequests(fromArray);
+          setRequestsId(fromArray);
   
         } catch (error) {
           console.log(error);
         }
+      
       };
   
       fetchRequestedLists();
@@ -32,7 +33,7 @@ const ContactedPage = () => {
 useEffect(()=>{
   const resposeData=async()=>{
     try{
-   const profiles = requests.map(from =>
+   const profiles = requestsId.map(from =>
     axios.get(`http://localhost:5000/api/v1/users/profile/${from}`)
    )
    const respostedata = await Promise.all(profiles)
@@ -44,15 +45,20 @@ useEffect(()=>{
     }
   }
   resposeData();
-  console.log(requestData)
-},[requests])
+
+},[requestsId])
 
 const handleAcceptRequest = async (userId) => {
   
   try {
     
     await axios.patch(`http://localhost:5000/api/v1/users/accept/${userId}`,{}, { withCredentials: true });
-   
+     // Update the requestedId safely
+     setRequestsId(prev => prev.filter(id => id !== userId));
+  
+     // Safely update the REQUESTData
+     setRequestData(prev => prev.filter(user => user?.user?._id !== userId));
+    
   } catch (error) {
     console.log('failed to accept request:', error);
   }
@@ -62,7 +68,12 @@ const handleRejectRequest = async (userId) => {
   try {
     
     await axios.patch(`http://localhost:5000/api/v1/users/reject/${userId}`,{}, { withCredentials: true });
-   
+       // Update the requestedId safely
+       setRequestsId(prev => prev.filter(id => id !== userId));
+  
+       // Safely update the REQUESTData
+       setRequestData(prev => prev.filter(user => user?.user?._id !== userId));
+      
   } catch (error) {
     console.log('failed to accept request:', error);
   }
