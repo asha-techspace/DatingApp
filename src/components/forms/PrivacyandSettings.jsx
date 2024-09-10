@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const PrivacyandSettings = () => {
+const PrivacyAndSettings = () => {
   const [twoFactorAuth, setTwoFactorAuth] = useState(true);
 
   const toggleTwoFactorAuth = () => {
@@ -8,72 +9,87 @@ const PrivacyandSettings = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-fit  bg-deep-plum">
-      <div className="bg-white p-4 px-6 rounded-t-3xl   w-full">
-        <div className="mb-2 flex justify-between  ">
-          <h3 className="text-lg text-gray-700 mb-2">Sign-in Email</h3>
-          <p className="text-gray-900">johnsmith@gmail.com</p>
+    <div className="flex justify-center items-center  bg-deep-plum">
+      <div className="bg-white p-6 rounded-t-3xl w-full ">
+        {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">Privacy and Settings</h2> */}
+
+        {/* Sign-in Email */}
+        <div className="mb-4 flex justify-between items-center">
+          <span className="text-gray-700 font-medium">Sign-in Email</span>
+          <span className="text-gray-900">johnsmith@gmail.com</span>
         </div>
 
-        <div className="mb-2 flex justify-between">
-          <h3 className="text-lg text-gray-700 mb-2">Password</h3>
-          <a href="#" className="text-blue-600">Change password</a>
+        {/* Password */}
+        <div className="mb-4 flex justify-between items-center">
+          <span className="text-gray-700 font-medium">Password</span>
+          <a href="/change-password" className="text-blue-600 hover:underline">Change password</a>
         </div>
 
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="text-lg text-gray-700">2-FA authentication</h3>
-          <label className="flex items-center cursor-pointer">
+        {/* 2-FA Authentication */}
+        <div className="mb-4 flex justify-between items-center">
+          <span className="text-gray-700 font-medium">2-FA Authentication</span>
+          <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
               checked={twoFactorAuth}
               onChange={toggleTwoFactorAuth}
-              className="hidden"
+              className="sr-only peer"
             />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-purple-300 peer-checked:bg-deep-plum"></div>
             <div
-              className={`relative w-10 h-6 rounded-full ${
-                twoFactorAuth ? 'bg-deep-plum' : 'bg-gray-300'
+              className={`absolute left-1 top-1 bg-white border border-gray-300 rounded-full h-4 w-4 transition-transform ${
+                twoFactorAuth ? 'translate-x-full border-white' : ''
               }`}
-            >
-              <div
-                className={`absolute w-4 h-4 bg-white rounded-full transition-transform ${
-                  twoFactorAuth ? 'transform translate-x-4' : ''
-                }`}
-              ></div>
-            </div>
+            ></div>
           </label>
         </div>
 
-        <div className="mb-2 flex justify-between">
-          <h3 className="text-lg text-gray-700 mb-2">Phone number</h3>
-          <p className="text-gray-900">+380 93 123 45 67</p>
+        {/* Phone Number */}
+        <div className="mb-4 flex justify-between items-center">
+          <span className="text-gray-700 font-medium">Phone Number</span>
+          <span className="text-gray-900">+380 93 123 45 67</span>
         </div>
 
-        <div className="mb-2">
-          <h3 className="text-lg text-gray-700 mb-2">Partner Preference</h3>
+        {/* Partner Preference */}
+        <div className="mb-6">
+          <Link to={'/partener_preferences'}>
+          <span className="text-gray-700 font-medium">Partner Preference</span>
+          </Link>
+          {/* Add partner preference content here */}
         </div>
 
-        <div className="mb-2">
-          <h3 className="text-lg text-gray-700 mb-2">Last sign in</h3>
-          <p className="text-gray-900">today at 18:34, Safari 198.123.23.23</p>
+        {/* Last Sign In */}
+        <div className="mb-6">
+          <span className="text-gray-700 font-medium">Last Sign In</span>
+          <p className="text-gray-900">Today at 18:34, Safari 198.123.23.23</p>
         </div>
 
-        <div className="mb-2">
-          <h3 className="text-lg text-gray-700 mb-2">Total active sessions (5)</h3>
-          <ul className="text-gray-900">
-            <li>DESKTOP-6TIG6EC • Kyiv, Ukraine <br /> Chrome • Used right now</li>
-            <li className="mt-4">iPhone 11 • Kyiv, Ukraine <br /> Chrome • 04/19/2022</li>
+        {/* Total Active Sessions */}
+        <div className="mb-6">
+          <span className="text-gray-700 font-medium">Total Active Sessions (5)</span>
+          <ul className="text-gray-900 mt-2 space-y-4">
+            <li>
+              <strong>DESKTOP-6TIG6EC</strong> • Kyiv, Ukraine <br />
+              Chrome • Used right now
+            </li>
+            <li>
+              <strong>iPhone 11</strong> • Kyiv, Ukraine <br />
+              Chrome • 04/19/2022
+            </li>
+            {/* Add other sessions if needed */}
           </ul>
         </div>
 
+        {/* Reset Sessions Button */}
         <button
           type="button"
-          className="w-full bg-deep-plum text-white py-2 rounded-full hover:bg-purple-900 transition duration-200"
+          className="w-full bg-deep-plum text-white py-2 rounded-full hover:bg-deep-plum transition duration-200"
         >
-          + Reset all active sessions
+          Reset All Active Sessions
         </button>
       </div>
     </div>
   );
 };
 
-export default PrivacyandSettings;
+export default PrivacyAndSettings;

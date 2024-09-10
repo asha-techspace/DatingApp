@@ -15,8 +15,28 @@ function PartnerPreferances() {
   const [weightRange, setWeightRange] = useState([40, 150]);
   const [ageRange, setAgeRange] = useState([18, 35]);
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [newInterest, setNewInterest] = useState('');
 
   console.log("selectedLocation" + selectedLocation);
+
+  const handleInputChange = (event) => {
+    setNewInterest(event.target.value);
+  };
+
+  const handleAddInterest = () => {
+    if (newInterest.trim() !== '') {
+      setInterests([...interests, newInterest.trim()]);
+      setNewInterest('');
+    }
+  };
+
+  const handleRemoveInterest = (index) => {
+    const updatedInterests = [...interests];
+    updatedInterests.splice(index, 1);
+    setInterests(updatedInterests);   
+
+  };
 
   // Handle the place selection from Autocomplete
   const handlePlaceSelected = (place) => {
@@ -24,7 +44,7 @@ function PartnerPreferances() {
     console.log("Selected Place:", place); // Log the entire place object for reference
   };
 
-  const body = { gender, occupation, educationLevel, ageRange, height, weightRange, lifestyleChoices, religion, selectedLocation };
+  const body = { gender, occupation, educationLevel, ageRange, height, weightRange, lifestyleChoices, religion, selectedLocation,interests };
   const userinfo = JSON.parse(sessionStorage.getItem('userInfo')); // Parse the string into an object
   const userId = userinfo._id; // Access the _id property
   console.log(userId);
@@ -45,7 +65,7 @@ function PartnerPreferances() {
         <div className="text-2xl mb-2 font-semibold">Partner Preference</div>
 
         <div>
-         
+
           <h1>Age Range: {ageRange[0]} - {ageRange[1]}</h1>
         </div>
         <ChakraProvider>
@@ -71,8 +91,8 @@ function PartnerPreferances() {
           onChange={(e) => setGender(e.target.value)}
           className="mt-2 mb-4 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
-            <option  value="Both">select</option> 
-          <option  value="Male">Male</option>
+          <option value="Both">select</option>
+          <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
         </select>
@@ -100,18 +120,36 @@ function PartnerPreferances() {
           />
         </div>
 
-        <div>
-          <h1>Interests & Hobbies</h1>
-        </div>
-        <button className="bg-gray-500 hover:bg-blue-700 text-white px-4 rounded mx-2">
-          Yoga
+        <div className="mb-4">
+      <h1 className="text-md">Interests & Hobbies</h1>
+      <div className="flex items-center">
+        <input
+          type="text"
+          className="appearance-none block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          value={newInterest}
+          onChange={handleInputChange}
+        />
+        <button
+          className="ml-2 px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700"
+          onClick={handleAddInterest}
+        >
+          +
         </button>
-        <button className="bg-gray-500 hover:bg-blue-700 text-white px-4 rounded mx-4">
-          Jazz
-        </button>
-        <button className="bg-gray-500 hover:bg-blue-700 text-white px-4 rounded mx-2">
-          Reading
-        </button>
+      </div>
+      <ul className="mt-2 list-disc  flex gap-2 w-fit p-2 rounded-lg  text-white">
+        {interests.map((interest, index) => (
+          <li className="border bg-gray-900 px-2" key={index}>
+            {interest}
+            <button
+              className="ml-2 text-sm font-medium px-1 rounded-sm  text-white"
+              onClick={() => handleRemoveInterest(index)}
+            >
+              X
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
 
         <h1>Education Level</h1>
         <select
@@ -119,13 +157,13 @@ function PartnerPreferances() {
           onChange={(e) => setEducationLevel(e.target.value)}
           className="mt-2 mb-6 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
-          <option  value="High School">High School</option>
+          <option value="High School">High School</option>
           <option value="Bachelor">Bachelor</option>
           <option value="Masters">Masters</option>
         </select>
 
         <div>
-        <h1>height Range: {height[0]} - {height[1]}</h1>
+          <h1>height Range: {height[0]} - {height[1]}</h1>
         </div>
         <ChakraProvider>
           <RangeSlider
@@ -198,7 +236,7 @@ function PartnerPreferances() {
           onChange={(e) => setOccupation(e.target.value)}
           className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
-          <option selected  value=" ">Select (default)</option>
+          <option selected value=" ">Select (default)</option>
           <option value="Student">Student</option>
           <option value="Business">Business</option>
           <option value="Healthcare">Healthcare</option>
