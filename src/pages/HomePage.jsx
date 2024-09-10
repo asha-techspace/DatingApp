@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ButtonGroup, Sidemenu, StoryView, UserIcon } from "../Components";
 import { HiOutlineBell } from "react-icons/hi";
 import HomeCardComponents from "../components/Homecards/HomeCardComponents";
@@ -15,8 +15,8 @@ const HomePage = () => {
   console.log(userInfo);
 
   const [users, setUsers] = useState([]);
-  const [location, setLocation] = useState({ lat: null, lng: null });
   const [error, setError] = useState(null);
+  const locationSent = useRef(false)
 
   useEffect(() => {
     // Function to check cookie and dispatch login or logout
@@ -58,35 +58,58 @@ const HomePage = () => {
         ); // Fetch all users from your backend
         const activeUsers = response.data.filter((user) => user.user.isActive); // Filter users where isActive is true
         setUsers(activeUsers); // Store filtered users in state
-        console.log("Fetched Active Users:", activeUsers);
+        
       } catch (error) {
         console.log("Error fetching users:", error);
       }
     };
 
     // Get current location
-    const getLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLocation({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
+    const getLocation = async() => {
+      if (locationSent.current) return;
+      else {
+        if (navigator.geolocation) {
+          try {
+            //  Fetch the location using navigator.geolocation
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
             });
-          },
-          (error) => {
-            setError(error.message);
+
+            const { latitude, longitude } = position.coords;
+            console.log("Location fetched successfully:", {
+              latitude,
+              longitude,
+            });
+
+            // Send the location after it has been fetched
+            await sendLocation(latitude, longitude);
+            locationSent.current = true; // Mark that the location has been fetched and sent
+            console.log("Location sent successfully");
+          } catch (error) {
+            setError(error.message); // Handle any errors during fetching or sending location
+            console.error("Error fetching or sending location:", error);
           }
-        );
-      } else {
-        setError("Geolocation is not supported by this browser.");
+        } else {
+          setError("Geolocation is not supported by this browser.");
+        }
       }
-    };
+    }
+      
+
 
     fetchUsers();
     handleAuthentication();
     getLocation();
   }, [dispatch]);
+
+  const sendLocation = async (latitude, longitude) => {
+    try {
+      await axios.post("http://localhost:5000/api/v1/users/getlocation", {latitude, longitude}, {withCredentials: true});
+    } catch (error) {
+      console.error("error sending location", error)
+    }
+  }
+
 
   return (
     <section className=" sm: w-screen md:w-full lg:w-full pt-5 px-5 pb-24 md:pb-5 h-screen overflow-y-auto overflow-x-hidden">
@@ -126,13 +149,6 @@ const HomePage = () => {
           </Link>
         ))}
       </div>
-      {/* {location.lat && location.lng ? (
-        <p>Your location: Latitude: {location.lat}, Longitude: {location.lng}</p>
-      ) : error ? (
-        <p>Error getting location: {error}</p>
-      ) : (
-        <p>Fetching location...</p>
-      )} */}
     </section>
   );
 };
