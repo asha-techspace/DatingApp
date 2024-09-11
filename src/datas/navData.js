@@ -4,6 +4,10 @@ export const navData = [
         href: "/profile"
     },
     {
+        title: "Matches",
+        href: "/match"
+    },
+    {
         title: "Send Request",
         href: "/sent"
     },
