@@ -9,9 +9,7 @@ import React from "react";
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <ChakraProvider>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App/>
     </ChakraProvider>
   </Provider>
 );

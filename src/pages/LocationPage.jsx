@@ -23,6 +23,8 @@ const LocationPage = () => {
         "http://localhost:5000/api/v1/users/matchbylocation",
         { withCredentials: true }
       );
+      console.log(locationResponse);
+      
 
       // Fetch match percentages
       const matchPercentageResponse = await axios.get(
@@ -82,11 +84,11 @@ console.log(nearByUsers)
           <Link to={`/profile/${user.user}?match=${user.matchPercentage}`} key={nearByUsers.id}>
             <MatchCardComponent
               isNew={false}
-              img={user.profileImage.url}
+              img={user.profileDetails.profileImage.url}
               distance={user.distance.toFixed(2)}
-              name={user.firstName}
-              age={user.age}
-              place={user.location.place}
+              name={user.userDetails.firstName + " " + user.userDetails.lastName}
+              age={user.profileDetails.age}
+              place={user.profileDetails.location}
               match={user.matchPercentage}
             />
           </Link>

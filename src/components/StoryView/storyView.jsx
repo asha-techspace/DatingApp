@@ -27,15 +27,17 @@ const StoryView = () => {
   }, []);
 
   return (
-    <div className="flex gap-4">
-      <button>
-        <UserIcon url={myProfile?.profileImage?.url} />
-        <p className="mt-0.5 text-[14px]">My Story</p>
-      </button>
+    <div className="flex gap-4 items-center ">
+      <Link to={`/story/${myProfile._id}`}>
+        <button>
+          <UserIcon story={true} url={myProfile?.profileImage?.url} />
+          <p className="mt-0.5 text-[14px]">My Story</p>
+        </button>
+      </Link>
       {users
-        .filter(user => myProfile.user !== user._id) // Filter out the current user's story
+        .filter(user => myProfile.user !== user.user._id) // Filter out the current user's story
         .map((user, i) => (
-          <Link key={user._id} to={`/story/${user._id}`}>
+          <Link key={i} to={`/story/${user._id}`}>
             <button className="flex flex-col items-center">
               <UserIcon story={true} url={user.profileImage.url} />
               <p className="mt-0.5 text-[14px]">{user.user?.firstName}</p>

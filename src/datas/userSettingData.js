@@ -3,7 +3,7 @@ export const settingData = [
         "title": "Account",
         "setting": "Privacy, security, change number",
         "icon": "key",
-        "link": "/change-password"
+        "link": "/privacyandsetting"
     },
     {
         "title": "Chats",
