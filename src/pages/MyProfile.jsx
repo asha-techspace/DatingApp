@@ -40,7 +40,7 @@ function MyProfile() {
       <ChevronLeft />
     </div> </Link>
     <div className="rounded-full flex border-2 w-fit backdrop-filter backdrop-blur-sm bg-opacity-45 border-white py-2 px-4 text-white">
-      <span>Edit</span>
+     <Link to="/editprofile"> <span>Edit</span></Link> 
     </div>
   </div>
 
