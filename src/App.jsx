@@ -59,9 +59,9 @@ import { useSelector } from 'react-redux';
 
 function App() {
   const isAuthenticated = useSelector(state => state.userAuth.isAuthenticated);
-  const isPrime = useSelector(state => state.userAuth.userInfo.isPrime);
+  const isPrime = useSelector(state => state.userAuth.userInfo?.isPrime?true:true);
   console.log(isPrime, 'prime')
-  const hideOnRoutes = ['/credit','/subscription',`/chat`, `/story/1`,'/spin','/create_group','/notification','/partener_preferences']; 
+  const hideOnRoutes = ['/credit','/subscription',`/chat`, `/story/1`,'/spin','/create_group','/notification','/partener_preferences','/','/login','/sign_up','/personal_details','/interested','/dating_interest','/job_status','/job_details']; 
 
   return (
     <BrowserRouter>

@@ -44,7 +44,7 @@ const SpinPage = () => {
         <h1>1 km near you</h1>
         {users && (
           <div>
-             <Link to={`/profile/${users.user._id}`}>
+             <Link to={`/profile/${users.user}`}>
             <div className=" mt-6 w-[116px] h-[116px] rounded-full border-4 border-light-purple">
               <img
                 className=" object-f w-full h-full rounded-full border-4 border-deep-plum"
