@@ -73,7 +73,7 @@ console.log(nearByUsers)
         </div>
         <ButtonGroup />
 
-        <SubHeader title="Location" />
+        {/* <SubHeader title="Location" /> */}
         <InteractionIcon />
         <p className="text-text font-medium my-3 text-lg">
           Your Matches <span className="text-light-purple">{nearByUsers.length}</span>
