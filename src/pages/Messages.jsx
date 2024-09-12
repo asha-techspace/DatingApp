@@ -17,6 +17,8 @@ export default function Messages() {
         const response = await axios.get(
           "http://localhost:5000/api/v1/users/users"
         );
+        console.log(response.data);
+        
         setUser(response.data);
       } catch (error) {
         console.log("Error fetching users:", error);
@@ -36,10 +38,10 @@ export default function Messages() {
           Recent Matches
         </h2>
         <div className="flex overflow-x-auto space-x-5">
-          {Userdata.map((user) => (
+          {user.map((user) => (
             <div key={user.id} className="flex-shrink-0 relative">
               <img
-                src={user.img}
+                src={user.profileImage.url}
                 alt={`${user.firstName} ${user.lastName}`}
                 className="h-24 w-20 rounded-2xl object-cover border-2 border-deep-plum"
               />

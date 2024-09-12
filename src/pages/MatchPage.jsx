@@ -33,7 +33,10 @@ const MatchPage = () => {
     const getPartnerPreference = async () => {
       try {
         const response = await axios.post(`http://localhost:5000/api/v1/users/sortfilter/${userID}`, filterSort);
+        console.log('length',response.data);
         if (response.data.length === 0) {
+          console.log('length',response.data);
+          
           setHasPartnerPreference(false); // Set to false if no partner preferences are found
         } else {
           setsortedUser(response.data);
