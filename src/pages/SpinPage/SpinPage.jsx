@@ -1,7 +1,39 @@
 import { CheckCheck, ChevronLeft  } from 'lucide-react';
 import '../SpinPage/SpinPage.css'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const SpinPage = () => {
+  const [users, setUsers] = useState(null);
+  const [currentUserIndex, setCurrentUserIndex] = useState(0);
+  const [isSpinning, setIsSpinning] = useState(false);
+
+    const fetchUsers = async () => {
+      setIsSpinning(true)
+      setUsers(null)
+      const spin = setTimeout(async() => {
+          try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/users/matchbyspin",
+          { withCredentials: true }
+        );
+        setUsers(response.data);
+        console.log(response.data);
+        
+      } catch (error) {
+        console.log(error);
+      }finally{
+        setIsSpinning(false);
+      }
+    
+        }, 3000);
+
+         // Clear the timeout if component unmounts
+         return () => clearTimeout(spinTimeout);
+      }
+      
+ 
   return (
     <div className=" relative  bg-deep-plum min-h-screen">
       <div className=" p-2 border-[1px] relative top-[24px] left-[24px] border-gray-400 w-[40px] h-[40px] flex items-center justify-center rounded-full">
@@ -10,26 +42,38 @@ const SpinPage = () => {
 
       <div className=" flex items-center pt-24 text-primary flex-col justify-center">
         <h1>1 km near you</h1>
-        <div className=" mt-6 w-[116px] h-[116px] rounded-full border-4 border-light-purple">
-          <img
-            className=" object-f w-full h-full rounded-full border-4 border-deep-plum"
-            src="https://s3-alpha-sig.figma.com/img/96ff/2cfa/6f229305367cdd87659b045828973252?Expires=1724025600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=VWDRaAeLt6JaCM2zm6sQ5QMnTFTrT5IZvRjKtXMjtrKdus74CwE6TBsroQ5yBJpGVHk2rexqw7Ot7B4G36GgPlNBjPzSkfKyg9DVIc9bDfPSTBH7KVCfaIDqJLsMeg4D8HL3DHUqsGQfNvTGK~~9zm9YpcGPacj5iiMuELgOWgL9lvV~WaKHAnfm00Lt82jF-Gzb4j7PFuYrvnmsFZvKaVQLnNhwOVDOm5ptQJXYbUWVn7DCvSfi3kkK0iMKmJq9iftqHSpgt9CyhOeDJRAg-6X-vVxzmMaf9gmJNYDah8P2j~300XN6Du7uM6gl7NhHd~7wp7gyR5Hreyzz6PRHcw__"
-            alt=""
-          />
-        </div>
+        {users && (
+          <div>
+             <Link to={`/profile/${users.user._id}`}>
+            <div className=" mt-6 w-[116px] h-[116px] rounded-full border-4 border-light-purple">
+              <img
+                className=" object-f w-full h-full rounded-full border-4 border-deep-plum"
+                src={users.profileDetails.profileImage.url}
+                alt=""
+              />
+            </div>
+            </Link>
+
+            <div className=" text-center mt-12 text-primary flex flex-col items-center gap-4">
+              <p>
+                {users.userDetails.firstName} - {users.profileDetails.age}
+              </p>
+              {/*  <div className=" w-[90px] rounded-full bg-light-purple px-4 flex items-center gap-2">
+              <CheckCheck />
+              Like
+            </div> */}
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className=" text-center mt-12 text-primary flex flex-col items-center gap-4">
-        <p>Sona - 27</p>
-        <div className=" w-[90px] rounded-full bg-light-purple px-4 flex items-center gap-2">
-          <CheckCheck />
-          Like
-        </div>
-      </div>
-
-      <div className="absolute bottom-0 flex items-end justify-center w-full">
+      <div
+        className={`absolute bottom-0 flex items-end justify-center w-full ${
+          isSpinning ? "spinning" : ""
+        }`}
+      >
         <svg
-          className="loading-spinner"
+          className={`${isSpinning ? "rotate" : ""}`}
           width="375"
           height="272"
           viewBox="0 0 375 272"
@@ -87,10 +131,13 @@ const SpinPage = () => {
 
       <div className=" absolute bottom-5 w-full flex items-center justify-center">
         <div className=" relative w-[327px] h-[64px] flex items-end justify-center rounded-full bg-white p-2">
-          <div className="curve w-[60px] h-[60px] absolute top-[-25px] border-[10px] border-deep-plum rounded-full">
+          <div
+            className="curve w-[60px] h-[60px] absolute top-[-25px] border-[10px] border-deep-plum rounded-full"
+            onClick={fetchUsers}
+          >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/9/98/Color_circle_%28RGB%29.png"
-              alt=""
+              alt="spinner"
             />
           </div>
           Spin Here
