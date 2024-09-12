@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronLeft, Navigation, Heart } from 'lucide-react';
+import {GraduationCap, Cigarette,Beer, ChevronLeft, Navigation, Heart } from 'lucide-react';
 import ProfileActionbar from '../components/ProfileActionbar';
 import Button from '../components/buttons/InterestButton';
 import { useSelector } from 'react-redux';
@@ -77,7 +77,7 @@ function MyProfile() {
             {/* Dynamic Interests */}
             <div className="mt-4">
               <span className="text-gray-600">Interest</span>
-              <div className="flex gap-2 justify-center flex-wrap">
+              <div className="flex  flex-wrap">
                 {myProfile?.interests?.[0]?.split(',').map((interest, index) => (
                   <Button
                     key={index}
@@ -88,6 +88,26 @@ function MyProfile() {
                 ))}
               </div>
             </div>
+
+            <div className="mt-4 ">
+      <span className="text-gray-600">Smoking & Drinking</span>
+      <div className="flex gap-4 text-purple-800">
+      <div className="border w-fit flex items-center gap-2 px-2 py-1 mt-2 rounded-lg font-semibold">
+        <Beer /> {myProfile ? myProfile.drinking : 'Loading...'} {/* Conditionally render user.drinking */}
+      </div>
+      <div className="border w-fit flex gap-2 items-center px-2 py-2 mt-2 rounded-lg font-semibold">
+        <Cigarette /> {myProfile ? myProfile.smoking : 'Loading...'} {/* Conditionally render user.drinking */}
+      </div>
+      </div>
+      
+    </div>
+
+    <div className="mt-4">
+    <span className="text-gray-600">Qualification</span>
+    <div className="border w-fit flex text-purple-800 items-center gap-2 px-2 py-1 mt-2 rounded-lg font-semibold">
+    <GraduationCap /> {myProfile ? myProfile.qualification : 'Loading...'} {/* Conditionally render user.drinking */}
+      </div>
+    </div>
           </div>
         </div>
 
