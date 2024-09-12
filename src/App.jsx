@@ -54,10 +54,13 @@ import UsersProfile from './pages/test/MyProfile';
 import SearchPage from './pages/search/SearchPage';
 import Chat from './pages/chat/Chat';
 import ProtectedRouter from './utils/ProtectedRouter';
+import ProtectedPrimeRouter from './utils/ProtectedPrimeRouter';
 import { useSelector } from 'react-redux';
 
 function App() {
   const isAuthenticated = useSelector(state => state.userAuth.isAuthenticated);
+  const isPrime = useSelector(state => state.userAuth.userInfo.isPrime);
+  console.log(isPrime, 'prime')
   const hideOnRoutes = ['/credit','/subscription',`/chat`, `/story/1`,'/spin','/create_group','/notification','/partener_preferences']; 
 
   return (
@@ -92,7 +95,7 @@ function App() {
           <Route path='error_403' element={<Error403 />} />
           <Route path='sort_filter' element={<ProtectedRouter isAuthenticated={isAuthenticated}><SortFilter /></ProtectedRouter>} />
           <Route path='partener_preferences' element={<ProtectedRouter isAuthenticated={isAuthenticated}><PartnerPreferances /></ProtectedRouter>} />
-          <Route path='/story/:id' element={<ProtectedRouter isAuthenticated={isAuthenticated}><Story /></ProtectedRouter>} />
+          <Route path='/story/:id' element={<ProtectedPrimeRouter isAuthenticated={isAuthenticated} isPrime={isPrime}><Story /></ProtectedPrimeRouter>} />
           <Route path='/spin' element={<ProtectedRouter isAuthenticated={isAuthenticated}><SpinPage /></ProtectedRouter>} />
           <Route path='/credit' element={<ProtectedRouter isAuthenticated={isAuthenticated}><AddCreditCard /></ProtectedRouter>} />
           <Route path='/message' element={<ProtectedRouter isAuthenticated={isAuthenticated}><Messages /></ProtectedRouter>} />
@@ -101,7 +104,7 @@ function App() {
           <Route path='create_group' element={<ProtectedRouter isAuthenticated={isAuthenticated}><CreateGroup /></ProtectedRouter>} />
           <Route path='/profile/:userId' element={<ProtectedRouter isAuthenticated={isAuthenticated}><UsersProfile /></ProtectedRouter>} />
           <Route path='/search' element={<ProtectedRouter isAuthenticated={isAuthenticated}><SearchPage /></ProtectedRouter>} />
-          <Route path='/chat/:id' element={<ProtectedRouter isAuthenticated={isAuthenticated}><Chat /></ProtectedRouter>} />
+          <Route path='/chat/:id' element={<ProtectedPrimeRouter isAuthenticated={isAuthenticated} isPrime={isPrime}><Chat /></ProtectedPrimeRouter>} />
         </Route>
         <Route path='/job_status' element={<JobStatus />} />
         <Route path='/job_details' element={<JobDetails />} />
