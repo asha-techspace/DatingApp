@@ -8,6 +8,9 @@ const PrivacyAndSettings = () => {
     setTwoFactorAuth(!twoFactorAuth);
   };
 
+  const userinfo = JSON.parse(sessionStorage.getItem('userInfo'))
+  const userEmail = userinfo.email
+
   return (
     <div className="flex justify-center items-center  bg-deep-plum">
       <div className="bg-white p-6 rounded-t-3xl w-full ">
@@ -16,7 +19,7 @@ const PrivacyAndSettings = () => {
         {/* Sign-in Email */}
         <div className="mb-4 flex justify-between items-center">
           <span className="text-gray-700 font-medium">Sign-in Email</span>
-          <span className="text-gray-900">johnsmith@gmail.com</span>
+          <span className="text-gray-900">{userEmail?userEmail:"johnsmith@gmail.com"}</span>
         </div>
 
         {/* Password */}
@@ -45,18 +48,18 @@ const PrivacyAndSettings = () => {
         </div>
 
         {/* Phone Number */}
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-2 flex justify-between items-center hover:bg-gray-100 py-2">
           <span className="text-gray-700 font-medium">Phone Number</span>
           <span className="text-gray-900">+380 93 123 45 67</span>
         </div>
 
         {/* Partner Preference */}
-        <div className="mb-6">
-          <Link to={'/partener_preferences'}>
+        <Link to={'/partener_preferences'}>
+        <div className="mb-4 hover:bg-gray-100 py-2">
           <span className="text-gray-700 font-medium">Partner Preference</span>
-          </Link>
           {/* Add partner preference content here */}
         </div>
+        </Link>
 
         {/* Last Sign In */}
         <div className="mb-6">

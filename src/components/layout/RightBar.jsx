@@ -21,7 +21,7 @@ const RightBar = () => {
   const myProfileCookie = Cookies.get('myProfile');
   const decodedMyProfileCookie = decodeURIComponent(myProfileCookie);
   const cleanedMyProfileJson = decodedMyProfileCookie.startsWith('j:') ? decodedMyProfileCookie.slice(2) : decodedMyProfileCookie;
-  const myProfile = JSON.parse(cleanedMyProfileJson);
+  const myProfile = cleanedMyProfileJson ? JSON.parse(cleanedMyProfileJson) : null;
   console.log(myProfile);
 
   const handleLogout = async () => {

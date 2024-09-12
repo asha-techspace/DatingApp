@@ -23,7 +23,7 @@ const LocationPage = () => {
         "http://localhost:5000/api/v1/users/matchbylocation",
         { withCredentials: true }
       );
-      console.log(locationResponse);
+      
       
 
       // Fetch match percentages
@@ -36,7 +36,7 @@ const LocationPage = () => {
       const matchPercentages = matchPercentageResponse.data.results;
 
       console.log("Match percentages:", matchPercentages);
-      console.log("Location response:", locationResponse);
+      console.log("Location response:", locationResponse.data);
 
       // Combine the location data with match percentages
       const combinedData = locationResponse.data.map(user => {
@@ -73,7 +73,7 @@ console.log(nearByUsers)
         </div>
         <ButtonGroup />
 
-        <SubHeader title="Location" />
+        {/* <SubHeader title="Location" /> */}
         <InteractionIcon />
         <p className="text-text font-medium my-3 text-lg">
           Your Matches <span className="text-light-purple">{nearByUsers.length}</span>

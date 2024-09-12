@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function PartnerPreferances() {
   const [gender, setGender] = useState('Male');
@@ -20,6 +21,7 @@ function PartnerPreferances() {
   const [newInterest, setNewInterest] = useState('');
   const [newLocation, setNewLocation] = useState(''); // Added for location input
   const [prefData, setPrefData] = useState(null);
+  const navigate = useNavigate(); 
 
   const userinfo = JSON.parse(sessionStorage.getItem('userInfo'));
   const userId = userinfo._id;
@@ -90,7 +92,11 @@ function PartnerPreferances() {
       const response = await axios.post(`http://localhost:5000/api/v1/users/preferences/${userId}`, body);
       console.log(response);
       toast.success("PartnerPreference Saved!");
-
+       // Delay navigation by 2 seconds (2000 milliseconds)
+    setTimeout(() => {
+      navigate('/match'); // Navigate to /match after delay
+    }, 2000);
+    
     } catch (error) {
       console.error("Error saving preferences:", error);
       toast.error(error.response?.data?.message || "Error occured whicle saving!"); // Display error toast

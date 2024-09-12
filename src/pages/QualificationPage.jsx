@@ -52,7 +52,7 @@ const QualificationPage = () => {
       <StoryView />
         </div>
         <ButtonGroup />
-        <SubHeader title='Qualification' />
+        {/* <SubHeader title='Qualification' /> */}
         <InteractionIcon />
         <p className='text-text font-medium my-3 text-lg'>Your Matches <span className='text-light-purple'>{dataqualification.length}</span></p>
       </div>

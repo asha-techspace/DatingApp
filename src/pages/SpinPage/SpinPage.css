@@ -1,6 +1,5 @@
-.loading-spinner {
-  animation: rotate 3s linear infinite;
-  transform-origin: center;
+.spinning {
+  animation: rotate 2s linear infinite;
 }
 
 @keyframes rotate {

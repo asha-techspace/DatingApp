@@ -89,9 +89,11 @@ function SortFilter() {
           <div className="border-t border-gray-200 mb-2"></div>
 
           <div className='flex space-x-6'>
+            <Link to={'/partener_preferences'}>
             <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-              Cancel
+            Set Partner Preferences
             </button>
+            </Link>
             <Link to={'/match'}>
               <button 
                 className="bg-purple-500 hover:bg-deep-plum text-white font-bold py-2 px-4 rounded" 

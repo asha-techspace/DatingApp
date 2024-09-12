@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ChevronLeft, Navigation,Heart } from "lucide-react";
+import {GraduationCap, Cigarette,Beer,ChevronLeft, Navigation,Heart } from "lucide-react";
 import ProfileActionbar from "../../components/ProfileActionbar";
 import Button from "../../components/buttons/InterestButton";
 import { useParams, Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { getIconForInterest } from "../../datas/Interesticon";
 
 function MyProfile() {
   const { userId } = useParams();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const queryParams = new URLSearchParams(location.search);
   const matchPercentage = queryParams.get('match');
 
@@ -75,7 +75,7 @@ function MyProfile() {
             {/* Dynamic Interests */}
             <div className="mt-4">
               <span className="text-gray-600">Interest</span>
-              <div className="flex gap-2 justify-center flex-wrap">
+              <div className="flex  justify-start flex-wrap">
                 {user?.interests?.[0]?.split(',').map((interest, index) => (
                   <Button
                     key={index}
@@ -86,6 +86,27 @@ function MyProfile() {
                 ))}
               </div>
             </div>
+
+            <div className="mt-4 ">
+      <span className="text-gray-600">Smoking & Drinking</span>
+      <div className="flex gap-4 text-purple-800">
+      <div className="border w-fit flex items-center gap-2 px-2 py-1 mt-2 rounded-lg font-semibold">
+        <Beer /> {user ? user.drinking : 'Loading...'} {/* Conditionally render user.drinking */}
+      </div>
+      <div className="border w-fit flex gap-2 items-center px-2 py-2 mt-2 rounded-lg font-semibold">
+        <Cigarette /> {user ? user.smoking : 'Loading...'} {/* Conditionally render user.drinking */}
+      </div>
+      </div>
+      
+    </div>
+
+    <div className="mt-4">
+    <span className="text-gray-600">Qualification</span>
+    <div className="border w-fit flex text-purple-800 items-center gap-2 px-2 py-1 mt-2 rounded-lg font-semibold">
+    <GraduationCap /> {user ? user.qualification : 'Loading...'} {/* Conditionally render user.drinking */}
+      </div>
+    </div>
+
 
             <div className="fixed z-50 bottom-10 left-1/2 transform -translate-x-1/2">
               <ProfileActionbar />
