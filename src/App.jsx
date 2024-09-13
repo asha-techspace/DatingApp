@@ -75,7 +75,7 @@ function App() {
           <Route path='/profile' element={<ProtectedRouter isAuthenticated={isAuthenticated}><MyProfile /></ProtectedRouter>} />
           <Route path='/paymentMethod' element={<ProtectedRouter isAuthenticated={isAuthenticated}><PaymentMethods /></ProtectedRouter>} /> 
           <Route path='/change-password' element={<ProtectedRouter isAuthenticated={isAuthenticated}><ChangePwdPage /></ProtectedRouter>} />
-          <Route path='/editprofile/:userId' element={<ProtectedRouter isAuthenticated={isAuthenticated}><EditprofilePage /></ProtectedRouter>} />
+          <Route path='/editprofile' element={<ProtectedRouter isAuthenticated={isAuthenticated}><EditprofilePage /></ProtectedRouter>} />
           <Route path='/privacyandsetting' element={<ProtectedRouter isAuthenticated={isAuthenticated}><PrivacyandSettingspage /></ProtectedRouter>} />
           <Route path='/settings' element={<ProtectedRouter isAuthenticated={isAuthenticated}><SettingsPage /></ProtectedRouter>} />
           <Route path='/location' element={<ProtectedRouter isAuthenticated={isAuthenticated}><LocationPage /></ProtectedRouter>} />

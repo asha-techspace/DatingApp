@@ -6,8 +6,9 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import debounce from 'lodash.debounce'; // Import debounce from lodash for debouncing saves
 
-function PartnerPreferances() {
+function PartnerPreferences() {
   const [gender, setGender] = useState('Male');
   const [educationLevel, setEducationLevel] = useState("High School");
   const [lifestyleChoices, setLifestyleChoice] = useState("");
@@ -16,10 +17,10 @@ function PartnerPreferances() {
   const [height, setHeight] = useState([100, 220]);
   const [weightRange, setWeightRange] = useState([40, 150]);
   const [ageRange, setAgeRange] = useState([18, 35]);
-  const [locations, setLocations] = useState([]); // Changed to array
+  const [locations, setLocations] = useState([]); 
   const [interests, setInterests] = useState([]);
   const [newInterest, setNewInterest] = useState('');
-  const [newLocation, setNewLocation] = useState(''); // Added for location input
+  const [newLocation, setNewLocation] = useState('');
   const [prefData, setPrefData] = useState(null);
   const navigate = useNavigate(); 
 
@@ -40,7 +41,7 @@ function PartnerPreferances() {
         setHeight(data.height || [100, 220]);
         setWeightRange(data.weightRange || [40, 150]);
         setAgeRange(data.ageRange || [18, 35]);
-        setLocations(data.locations || []); // Initialize locations
+        setLocations(data.locations || []);
         setInterests(data.interests || []);
       } catch (error) {
         console.error("Error fetching preferences:", error);
@@ -59,7 +60,6 @@ function PartnerPreferances() {
       setNewInterest('');
     }
   };
-  
 
   const handleRemoveInterest = (index) => {
     const updatedInterests = [...interests];
@@ -67,7 +67,6 @@ function PartnerPreferances() {
     setInterests(updatedInterests);
   };
 
-  // New functions for handling locations
   const handleLocationChange = (event) => {
     setNewLocation(event.target.value);
   };
@@ -87,26 +86,29 @@ function PartnerPreferances() {
 
   const body = { gender, occupation, educationLevel, ageRange, height, weightRange, lifestyleChoices, religion, locations, interests };
 
-  const storePreference = async () => {
+  // Debounced save function
+  const debouncedSave = debounce(async () => {
     try {
       const response = await axios.post(`http://localhost:5000/api/v1/users/preferences/${userId}`, body);
       console.log(response);
-      toast.success("PartnerPreference Saved!");
-       // Delay navigation by 2 seconds (2000 milliseconds)
-    setTimeout(() => {
-      navigate('/match'); // Navigate to /match after delay
-    }, 2000);
-    
+      
     } catch (error) {
       console.error("Error saving preferences:", error);
-      toast.error(error.response?.data?.message || "Error occured whicle saving!"); // Display error toast
-
+      toast.error(error.response?.data?.message || "Error occurred while saving!");
     }
-  };
+  }, 1000); // 1-second debounce
+
+  // Trigger save on every state change
+  useEffect(() => {
+    debouncedSave();
+    // Cleanup the debounce on unmount
+    return () => {
+      debouncedSave.cancel();
+    };
+  }, [gender, occupation, educationLevel, ageRange, height, weightRange, lifestyleChoices, religion, locations, interests]);
 
   return (
     <div className="bg-deep-plum pt-2 h-screen overflow-scroll">
-
       <PageTitle icon={Search} pageTitle={"Privacy & Settings"} />
       <div className="bg-white rounded-t-3xl px-8 h-screen py-6 overflow-y-auto">
         <ToastContainer />
@@ -153,12 +155,12 @@ function PartnerPreferances() {
               value={newLocation}
               onChange={handleLocationChange}
               className="appearance-none block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md"
-              disabled={locations.length >= 3} // Disable input when 3 locations are added
+              disabled={locations.length >= 3}
             />
             <button
               onClick={handleAddLocation}
               className={`ml-2 px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700 ${locations.length >= 3 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              disabled={locations.length >= 3} // Disable button when 3 locations are added
+              disabled={locations.length >= 3}
             >
               +
             </button>
@@ -179,7 +181,6 @@ function PartnerPreferances() {
           </ul>
         </div>
 
-
         {/* Interests */}
         <div className="mb-4">
           <h1 className="text-md">Interests & Hobbies</h1>
@@ -189,12 +190,12 @@ function PartnerPreferances() {
               value={newInterest}
               onChange={handleInputChange}
               className="appearance-none block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md"
-              disabled={interests.length >= 3} // Disable input when 3 interests are added
+              disabled={interests.length >= 3}
             />
             <button
               onClick={handleAddInterest}
               className={`ml-2 px-3 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700 ${interests.length >= 3 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              disabled={interests.length >= 3} // Disable button when 3 interests are added
+              disabled={interests.length >= 3}
             >
               +
             </button>
@@ -215,8 +216,6 @@ function PartnerPreferances() {
           </ul>
         </div>
 
-
-        {/* Rest of the form stays the same... */}
         {/* Education Level */}
         <h1>Education Level</h1>
         <select
@@ -225,108 +224,106 @@ function PartnerPreferances() {
           className="mt-2 mb-6 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           <option value="High School">High School</option>
-          <option value="Bachelor">Bachelor</option>
-          <option value="Masters">Masters</option>
-        </select>
-
-        {/* Height Range */}
-        <div>
-          <h1>Height Range: {height[0]} - {height[1]}</h1>
-        </div>
-        <ChakraProvider>
-          <RangeSlider
-            value={height}
-            onChange={(val) => setHeight(val)}
-            width="100%"
-            aria-label={["Min Height", "Max Height"]}
-            min={100}
-            max={220}
-          >
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack />
-            </RangeSliderTrack>
-            <RangeSliderThumb index={0} />
-            <RangeSliderThumb index={1} />
-          </RangeSlider>
-        </ChakraProvider>
-
-        {/* Weight Range */}
-        <div>
-          <h1>Weight Range: {weightRange[0]} - {weightRange[1]}</h1>
-        </div>
-        <ChakraProvider>
-          <RangeSlider
-            value={weightRange}
-            onChange={(val) => setWeightRange(val)}
-            width="100%"
-            aria-label={["Min Weight", "Max Weight"]}
-            min={40}
-            max={150}
-          >
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack />
-            </RangeSliderTrack>
-            <RangeSliderThumb index={0} />
-            <RangeSliderThumb index={1} />
-          </RangeSlider>
-        </ChakraProvider>
-
-        {/* Lifestyle Choices */}
-        <h1>Lifestyle Choices</h1>
-        <select
-          value={lifestyleChoices}
-          onChange={(e) => setLifestyleChoice(e.target.value)}
-          className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-        >
-          <option value="">Select (default)</option>
-          <option value="Social activities">Social activities</option>
-          <option value="Arts and culture">Arts and culture</option>
-          <option value="Indoor activities">Indoor activities</option>
-        </select>
-
-        {/* Religion */}
-        <h1>Religion</h1>
-        <select
-          value={religion}
-          onChange={(e) => setReligion(e.target.value)}
-          className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-        >
-          <option value="">Select (default)</option>
-          <option value="Christian">Christian</option>
-          <option value="Muslim">Muslim</option>
-          <option value="Hindu">Hindu</option>
-          <option value="Jain">Jain</option>
-          <option value="Sikh">Sikh</option>
-          <option value="Other">Other</option>
-        </select>
-
-        {/* Occupation */}
-        <h1>Occupation</h1>
-        <select
-          value={occupation}
-          onChange={(e) => setOccupation(e.target.value)}
-          className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-        >
-          <option value="">Select (default)</option>
-          <option value="Student">Student</option>
-          <option value="Business">Business</option>
-          <option value="Healthcare">Healthcare</option>
-          <option value="Construction">Construction</option>
-          <option value="Retail">Retail</option>
-          <option value="Other">Other</option>
-        </select>
-
-        <div className="mt-4">
-          <button
-            onClick={storePreference}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Save Preferences
-          </button>
-        </div>
-      </div>
+          <option value="Bachelor">Bachelor</option> 
+          <option value="Masters">Masters</option> 
+          </select>
+              {/* Height Range */}
+    <div>
+      <h1>Height Range: {height[0]} - {height[1]}</h1>
     </div>
-  );
-}
+    <ChakraProvider>
+      <RangeSlider
+        value={height}
+        onChange={(val) => setHeight(val)}
+        width="100%"
+        aria-label={["Min Height", "Max Height"]}
+        min={100}
+        max={220}
+      >
+        <RangeSliderTrack>
+          <RangeSliderFilledTrack />
+        </RangeSliderTrack>
+        <RangeSliderThumb index={0} />
+        <RangeSliderThumb index={1} />
+      </RangeSlider>
+    </ChakraProvider>
 
-export default PartnerPreferances;
+    {/* Weight Range */}
+    <div>
+      <h1>Weight Range: {weightRange[0]} - {weightRange[1]}</h1>
+    </div>
+    <ChakraProvider>
+      <RangeSlider
+        value={weightRange}
+        onChange={(val) => setWeightRange(val)}
+        width="100%"
+        aria-label={["Min Weight", "Max Weight"]}
+        min={40}
+        max={150}
+      >
+        <RangeSliderTrack>
+          <RangeSliderFilledTrack />
+        </RangeSliderTrack>
+        <RangeSliderThumb index={0} />
+        <RangeSliderThumb index={1} />
+      </RangeSlider>
+    </ChakraProvider>
+
+    {/* Lifestyle Choices */}
+    <h1>Lifestyle Choices</h1>
+    <select
+      value={lifestyleChoices}
+      onChange={(e) => setLifestyleChoice(e.target.value)}
+      className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+    >
+      <option value="">Select (default)</option>
+      <option value="Social activities">Social activities</option>
+      <option value="Arts and culture">Arts and culture</option>
+      <option value="Indoor activities">Indoor activities</option>
+    </select>
+
+    {/* Religion */}
+    <h1>Religion</h1>
+    <select
+      value={religion}
+      onChange={(e) => setReligion(e.target.value)}
+      className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+    >
+      <option value="">Select (default)</option>
+      <option value="Christian">Christian</option>
+      <option value="Muslim">Muslim</option>
+      <option value="Hindu">Hindu</option>
+      <option value="Jain">Jain</option>
+      <option value="Sikh">Sikh</option>
+      <option value="Other">Other</option>
+    </select>
+
+    {/* Occupation */}
+    <h1>Occupation</h1>
+    <select
+      value={occupation}
+      onChange={(e) => setOccupation(e.target.value)}
+      className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+    >
+      <option value="">Select (default)</option>
+      <option value="Student">Student</option>
+      <option value="Business">Business</option>
+      <option value="Healthcare">Healthcare</option>
+      <option value="Construction">Construction</option>
+      <option value="Retail">Retail</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <div className="mt-4">
+      <button
+        onClick={() => navigate('/match')}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Go to Matches
+      </button>
+    </div>
+  </div>
+</div>
+); }
+
+export default PartnerPreferences;
