@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const SpinPage = () => {
   const [users, setUsers] = useState(null);
   const [currentUserIndex, setCurrentUserIndex] = useState(0);
+  const [noUsersFound, setNoUsersFound] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false);
 
     const fetchUsers = async () => {
@@ -18,8 +19,13 @@ const SpinPage = () => {
           "http://localhost:5000/api/v1/users/matchbyspin",
           { withCredentials: true }
         );
-        setUsers(response.data);
-        console.log(response.data);
+         if (response.data && response.data.user) {
+           setUsers(response.data);
+         } else {
+           setNoUsersFound(true); // Set state if no users are found
+         }
+
+         console.log(response.data);
         
       } catch (error) {
         console.log(error);
@@ -44,14 +50,14 @@ const SpinPage = () => {
         <h1>1 km near you</h1>
         {users && (
           <div>
-             <Link to={`/profile/${users.user}`}>
-            <div className=" mt-6 w-[116px] h-[116px] rounded-full border-4 border-light-purple">
-              <img
-                className=" object-f w-full h-full rounded-full border-4 border-deep-plum"
-                src={users.profileDetails.profileImage.url}
-                alt=""
-              />
-            </div>
+            <Link to={`/profile/${users.user}`}>
+              <div className=" mt-6 w-[116px] h-[116px] rounded-full border-4 border-light-purple">
+                <img
+                  className=" object-f w-full h-full rounded-full border-4 border-deep-plum"
+                  src={users.profileDetails.profileImage.url}
+                  alt=""
+                />
+              </div>
             </Link>
 
             <div className=" text-center mt-12 text-primary flex flex-col items-center gap-4">
@@ -64,6 +70,12 @@ const SpinPage = () => {
             </div> */}
             </div>
           </div>
+        )}
+
+        {noUsersFound && (
+          <p className="text-primary mt-6">
+            No users found. Please try again later!
+          </p>
         )}
       </div>
 
@@ -83,7 +95,7 @@ const SpinPage = () => {
           <g opacity="0.2">
             <path
               d="M301.044 38.2586L299.624 40.1158C267.18 15.4042 228.421 2.33824 187.521 2.33824C124.162 2.33824 65.8715 34.2164 31.5919 87.6162L29.6255 86.3489C64.3202 32.2718 123.354 0.000350952 187.521 0.000350952C228.924 0.000350952 268.185 13.2411 301.044 38.2586Z"
-              fill="yellow"
+              fill="white"
             />
             <path
               d="M375 187.489C375 290.88 290.885 375 187.5 375C84.115 375 0 290.88 0 187.489H2.33773C2.33773 289.591 85.404 372.64 187.478 372.64C289.574 372.64 372.619 289.569 372.619 187.489C372.619 156.638 364.885 126.092 350.246 99.174L352.3 98.0597C367.179 125.328 375 156.266 375 187.489Z"
