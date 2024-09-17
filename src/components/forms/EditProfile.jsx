@@ -129,7 +129,7 @@ function EditProfile() {
         </p>
         <form
           onSubmit={handleSubmit}
-          className="mt-2 space-y-4 overflow-scroll h-[71vh]"
+          className="mt-2 space-y-4 overflow-scroll h-[59vh]"
         >
           <input
             type="text"
@@ -201,42 +201,42 @@ function EditProfile() {
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-lg"
           /></label>
-        
+
           <label htmlFor="reel">Reel
-          <input
-            type="file"
-             name="reel"
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg"
-          />
+            <input
+              type="file"
+              name="reel"
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-lg"
+            />
           </label>
-<div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            {data?.profileDetails?.additionalImage?.map((img) => {
-              return (
-                <img
-                  key={img._id}
-                  className="w-10 h-10 rounded-full object-cover "
-                  src={img?.url}
-                  alt="Image1"
-                />
-              );
-            })}
-            <button type="button" className="flex justify-center items-center w-10 h-10 border border-dashed border-gray-400 rounded-full text-gray-400">
-              +
-            </button>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              {data?.profileDetails?.additionalImage?.map((img) => {
+                return (
+                  <img
+                    key={img._id}
+                    className="w-10 h-10 rounded-full object-cover "
+                    src={img?.url}
+                    alt="Image1"
+                  />
+                );
+              })}
+              <button type="button" className="flex justify-center items-center w-10 h-10 border border-dashed border-gray-400 rounded-full text-gray-400">
+                +
+              </button>
+            </div>
+            <div className="flex items-center space-x-2">
+              <video className="w-10 h-10 rounded-full object-cover"
+                src={data?.profileDetails?.reel?.url}
+                autoPlay
+                controls
+              ></video>
+              <button type="button" className="flex justify-center items-center w-10 h-10 border border-dashed border-gray-400 rounded-full text-gray-400">
+                +
+              </button>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <video className="w-10 h-10 rounded-full object-cover"
-              src={data?.profileDetails?.reel?.url}
-              autoPlay
-              controls
-            ></video>
-            <button  type="button" className="flex justify-center items-center w-10 h-10 border border-dashed border-gray-400 rounded-full text-gray-400">
-              +
-            </button>
-          </div>
-        </div>
           <button
             type="submit"
             className="w-full bg-deep-plum text-white py-2 rounded-full hover:bg-purple-900 transition duration-200"
@@ -245,8 +245,8 @@ function EditProfile() {
           </button>
         </form>
 
-       
-  
+
+
       </div>
     </div>
   );

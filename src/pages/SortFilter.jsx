@@ -48,13 +48,13 @@ function SortFilter() {
             <h1>Last Active</h1>
             <CircleCheckBig />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center">
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('distance')}>
             <h1>Distance</h1>
-            <CircleCheckBig  />
+            <CircleCheckBig className={isSelected('distance') ? 'text-green-500' : ''} />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" >
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('popularity')} >
             <h1>Popularity</h1>
-            <CircleCheckBig  />
+            <CircleCheckBig className={isSelected('popularity') ? 'text-green-500' : ''} />
           </div>
           <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('age')}>
             <h1>Age</h1>
