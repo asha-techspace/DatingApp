@@ -24,7 +24,9 @@ const MatchPage = () => {
         const response = await axios.get('http://localhost:5000/api/v1/users/compare', { withCredentials: true });
         const filteredUsers = response.data.results.filter(user => user.matchPercentage >= 0);
         const sortedUsers = filteredUsers.sort((a, b) => b.matchPercentage - a.matchPercentage);
-        setUser(response.data.results);
+        setUser(sortedUsers);
+        console.log(sortedUsers);
+        
       } catch (error) {
         console.log(error);
       }
