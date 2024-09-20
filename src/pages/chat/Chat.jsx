@@ -55,26 +55,30 @@ const Chat = () => {
     if (storedMessages) {
       setMessages(JSON.parse(storedMessages));
     }
-
+  
     // Listen for incoming messages
     const handleMessage = (data) => {
-      const updatedMessages = [
-        ...messages,
-        { text: data.value, time: new Date().toLocaleTimeString(), sent: false }
-      ];
-      setMessages(updatedMessages);
-
-      // Save the received messages to localStorage
-      saveMessagesToLocalStorage(updatedMessages);
+      setMessages((prevMessages) => {
+        const updatedMessages = [
+          ...prevMessages,
+          { text: data.value, time: new Date().toLocaleTimeString(), sent: false }
+        ];
+        
+        // Save the received messages to localStorage
+        saveMessagesToLocalStorage(updatedMessages);
+        
+        return updatedMessages;
+      });
     };
-
+  
     socket.on("getMessage", handleMessage);
-
+  
     // Cleanup the listener when the component unmounts
     return () => {
       socket.off("getMessage", handleMessage);
     };
-  }, [messages]);
+  }, []);
+  
 
   return (
     <div className="relative bg-deep-plum h-screen overflow-y-auto">

@@ -41,3 +41,4 @@ const notificationComponent = (props) => {
 };
 
 export default notificationComponent;
+

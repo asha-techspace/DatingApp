@@ -135,20 +135,21 @@ const HomePage = () => {
       <ButtonGroup />
 
       <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-3 grid-cols-2 gap-5">
-        {users.map((user, i) => (
-          <Link to={`/profile/${user.user._id}`} key={i}>
-            <HomeCardComponents
-              img={user.profileImage.url}
-              name={`${user.user?.firstName} ${user.user?.lastName}`}
-              gender={user.gender}
-              job={user.qualification}
-              age={user.age}
-              place={user.place}
-              isActive={user.user?.isActive}
-            />
-          </Link>
-        ))}
-      </div>
+  {users.map((user, i) => (
+    <HomeCardComponents
+      key={i}
+      img={user.profileImage.url}
+      name={`${user.user?.firstName} ${user.user?.lastName}`}
+      userId={user.user._id}  // Pass userId as prop
+      gender={user.gender}
+      job={user.qualification}
+      age={user.age}
+      place={user.place}
+      isActive={user.user?.isActive}
+    />
+  ))}
+</div>
+
     </section>
   );
 };

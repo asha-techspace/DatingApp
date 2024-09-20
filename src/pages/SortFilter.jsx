@@ -44,17 +44,17 @@ function SortFilter() {
             <h1>Newest Member</h1>
             <CircleCheckBig className={isSelected('NewestMember') ? 'text-green-500' : ''} />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('LastActive')}>
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" >
             <h1>Last Active</h1>
-            <CircleCheckBig className={isSelected('LastActive') ? 'text-green-500' : ''} />
+            <CircleCheckBig />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('Distance')}>
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('distance')}>
             <h1>Distance</h1>
-            <CircleCheckBig className={isSelected('Distance') ? 'text-green-500' : ''} />
+            <CircleCheckBig className={isSelected('distance') ? 'text-green-500' : ''} />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('Popularity')}>
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('popularity')} >
             <h1>Popularity</h1>
-            <CircleCheckBig className={isSelected('Popularity') ? 'text-green-500' : ''} />
+            <CircleCheckBig className={isSelected('popularity') ? 'text-green-500' : ''} />
           </div>
           <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('age')}>
             <h1>Age</h1>
@@ -77,21 +77,23 @@ function SortFilter() {
             <h1>Interests/Hobbies</h1>
             <CircleCheckBig className={isSelected('Interests/Hobbies') ? 'text-green-500' : ''} />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('Languages Spoken')}>
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" >
             <h1>Languages Spoken</h1>
-            <CircleCheckBig className={isSelected('Languages Spoken') ? 'text-green-500' : ''} />
+            <CircleCheckBig  />
           </div>
-          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" onClick={() => handleSelect('Relationship Goals')}>
+          <div className="border-t border-gray-200 flex justify-between mb-2 items-center" >
             <h1>Relationship Goals</h1>
-            <CircleCheckBig className={isSelected('Relationship Goals') ? 'text-green-500' : ''} />
+            <CircleCheckBig  />
           </div>
 
           <div className="border-t border-gray-200 mb-2"></div>
 
           <div className='flex space-x-6'>
+            <Link to={'/partener_preferences'}>
             <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-              Cancel
+            Set Partner Preferences
             </button>
+            </Link>
             <Link to={'/match'}>
               <button 
                 className="bg-purple-500 hover:bg-deep-plum text-white font-bold py-2 px-4 rounded" 

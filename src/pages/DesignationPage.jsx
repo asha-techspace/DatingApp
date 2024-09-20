@@ -64,7 +64,7 @@ const DesignationPage = () => {
         </div>
         <ButtonGroup />
 
-        <SubHeader title="Designation" />
+        {/* <SubHeader title="Designation" /> */}
         <InteractionIcon />
         <p className="text-text font-medium my-3 text-lg">
           Your Matches <span className="text-light-purple">{count}</span>

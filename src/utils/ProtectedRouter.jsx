@@ -1,18 +1,13 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React from 'react'
+import { Navigate } from 'react-router-dom'
 
-const ProtectedRouter = ({ children }) => {
-  const isAuthenticated = useSelector(state => state.userAuth.isAuthenticated);
-  console.log('ProtectedRouter: isAuthenticated', isAuthenticated);
+const ProtectedRouter = ({ children, isAuthenticated }) => {
 
-  if (isAuthenticated) {
-    return children; // Render children if authenticated
-  } else {
-    toast.error("Token Expired", { duration: 1000 });
-    return <Navigate to="/" replace />;
-  }
+    if (!isAuthenticated) {
+        return <Navigate to={"/login"} />;
+    }
+
+    return children;
 };
 
 export default ProtectedRouter;
