@@ -30,6 +30,8 @@ function ProfileActionbar({ userId, from, to }) {
 
   const handleShortlistRequest = async () => {
     try {
+      console.log(userid.userId);
+      console.log(from, to);
       await axios.post(`http://localhost:5000/api/v1/users/shortlist/${userid.userId}`, { from, to }, { withCredentials: true });
       alert('Shortlisted!');
       console.log(userid.userId);

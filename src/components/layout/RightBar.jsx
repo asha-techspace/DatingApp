@@ -28,7 +28,7 @@ const RightBar = () => {
       try {
         const res = await axios.post('http://localhost:5000/logout', null, { withCredentials: true})
         dispatch(logout())
-        navigate('/')
+        navigate('/home')
       } catch (err) {
         console.log(err);
       }

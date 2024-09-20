@@ -1,19 +1,59 @@
 import { AlertCircle, Bell, CircleX, CircleCheckBig } from "lucide-react";
 import NotificationComponent from "./notificationComponent";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import axios from "axios";
+
+const socket = io('http://localhost:8800');
+
 const notificationBar = () => {
+  console.log("Inside Notification")
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+
+    // axios.get(`http://localhost:5000/api/v1/users/notifications`,{ withCredentials: true })
+    // .then((res) => res.json())
+    // .then((data) => setNotifications(data));
+
+    axios.get(`http://localhost:5000/api/v1/users/notifications`, { withCredentials: true })
+     .then((res) => {
+          console.log(`Fetched Notifications::${res.data} `)
+          setNotifications(res.data);  // Access the parsed JSON directly using res.data
+       })
+      .catch((error) => {
+              console.error('Error fetching notifications:', error);
+        });
+
+    // Join room specific to the user
+    socket.emit('joinRoom', 'currentUserId');  // Replace with your user ID logic
+
+    // Listen for real-time notifications
+    socket.on('newNotification', (notification) => {
+      console.log("Received New Notification.. pushing to state...")
+      setNotifications((prev) => [...prev, notification]);
+    });
+
+    return () => {
+      socket.off('newNotification');
+    };
+  }, []);
 
   return (
     <div className=" w-full p-4 backdrop-blur-lg h-full z-10">
       <nav className="absolute right-14 lg:right-24 border-2 border-gray-300 rounded-full p-2 mb-4">
-        <Link to="/">
+        <Link to="/home">
           <Bell />
         </Link>
       </nav>
 
       <div className="flex flex-col items-center gap-4 justify-center w-full mt-16">
-        <NotificationComponent
+      {notifications.map((notification) => (
+                  <NotificationComponent key={socket.id}  notification={notification}/>
+      ))}
+
+        {/* <NotificationComponent
           message="news" logo={<></>}
           />
         <NotificationComponent
@@ -26,7 +66,7 @@ const notificationBar = () => {
         
         <NotificationComponent
           message="Error" color={"text-red-500"} logo={<CircleX/>}
-          />
+          /> */}
         
         
       </div>
