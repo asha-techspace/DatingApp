@@ -5,7 +5,7 @@ import { MdCall } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000");
+const socket = io('http://localhost:8800');
 
 const Chat = () => {
   const [value, setValue] = useState("");
