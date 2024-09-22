@@ -8,6 +8,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { login, logout } from "../redux/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import {socket} from "../App"
+
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -44,6 +46,9 @@ const HomePage = () => {
           console.error("Error parsing user data or dispatching login:", error);
           dispatch(logout()); // Log out if there's an issue parsing data
         }
+
+        
+
       } else {
         dispatch(logout()); // Log out if cookies are not present
       }
@@ -100,6 +105,25 @@ const HomePage = () => {
     fetchUsers();
     handleAuthentication();
     getLocation();
+
+          // Emit 'joinRoom' when the socket connects
+          console.log(`id: ${JSON.stringify(userInfo)}`)
+          console.log(`id: ${userInfo.userInfo._id}`)
+          socket.on('connect', () => {
+            socket.emit('joinRoom', userInfo.userInfo._id);
+            console.log(`User joined room with ID: ${userInfo.userInfo._id}`);
+          });
+    
+          // Optionally handle disconnection/reconnection
+          socket.on('disconnect', () => {
+            console.log('Disconnected from the socket server');
+          });
+    
+          // return () => {
+          //   socket.disconnect(); // Clean up when the component unmounts
+          // };
+
+
   }, [dispatch]);
 
   const sendLocation = async (latitude, longitude) => {

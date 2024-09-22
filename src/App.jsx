@@ -56,6 +56,9 @@ import Chat from './pages/chat/Chat';
 import ProtectedRouter from './utils/ProtectedRouter';
 import ProtectedPrimeRouter from './utils/ProtectedPrimeRouter';
 import { useSelector } from 'react-redux';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:8800');
 
 function App() {
   const isAuthenticated = useSelector(state => state.userAuth.isAuthenticated);
@@ -67,9 +70,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<DesktopLayout />}>
-          <Route path='/home' element={<ProtectedRouter isAuthenticated={isAuthenticated}><HomePage /></ProtectedRouter>} />
+          <Route path='/home' element={<ProtectedRouter isAuthenticated={isAuthenticated}><HomePage/></ProtectedRouter>} />
           <Route path='/discover' element={<ProtectedRouter isAuthenticated={isAuthenticated}><DiscoverPage /></ProtectedRouter>} />
-          <Route path='/notification' element={<ProtectedRouter isAuthenticated={isAuthenticated}><Notification /></ProtectedRouter>} />
+          <Route path='/notification' element={<ProtectedRouter isAuthenticated={isAuthenticated}><Notification socket={socket}/></ProtectedRouter>} />
           <Route path='/qualification' element={<ProtectedRouter isAuthenticated={isAuthenticated}><QualificationPage /></ProtectedRouter>} />
           <Route path='/profileview' element={<ProtectedRouter isAuthenticated={isAuthenticated}><Profileviewpage /></ProtectedRouter>} />
           <Route path='/profile' element={<ProtectedRouter isAuthenticated={isAuthenticated}><MyProfile /></ProtectedRouter>} />
@@ -124,4 +127,4 @@ function App() {
   );
 }
 
-export default App;
+export {App,socket};

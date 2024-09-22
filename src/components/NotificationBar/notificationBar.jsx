@@ -2,14 +2,17 @@ import { AlertCircle, Bell, CircleX, CircleCheckBig } from "lucide-react";
 import NotificationComponent from "./notificationComponent";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
-const socket = io('http://localhost:8800');
 
-const notificationBar = () => {
-  console.log("Inside Notification")
+
+const notificationBar = (prop) => {
+  const socket = prop.socket
+  const userInfo = useSelector(state => state.userAuth.userInfo)
+  console.log(`Inside Notification ${userInfo?._id}`)
   const [notifications, setNotifications] = useState([]);
+  
 
   useEffect(() => {
 
@@ -26,8 +29,9 @@ const notificationBar = () => {
               console.error('Error fetching notifications:', error);
         });
 
+    console.log(userInfo?._id)
     // Join room specific to the user
-    socket.emit('joinRoom', 'currentUserId');  // Replace with your user ID logic
+    // socket.emit('joinRoom', userInfo?._id);  // Replace with your user ID logic
 
     // Listen for real-time notifications
     socket.on('newNotification', (notification) => {
