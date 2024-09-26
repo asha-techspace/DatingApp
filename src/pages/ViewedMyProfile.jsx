@@ -1,92 +1,96 @@
 import React, { useEffect, useState } from 'react';
-import { UserPreview } from '../components';
+import {MatchCardComponent} from '../components';
 import PageTitle from '../components/PageTitle/PageTitle';
 import { Search } from 'lucide-react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const ViewedMyProfilePage = () => {
-  const [viewedBy, setViewedBy] = useState([]);
-  const [viewedByData, setViewedByData] = useState([]);
+  const [viewedBy, setViewedBy] = useState([]); // List of user IDs who viewed the profile
+  const [viewedByData, setViewedByData] = useState([]); // Combined data with profiles and match percentages
 
+  // Fetch data (viewedBy list, profile data, match percentages)
   useEffect(() => {
     const fetchRequestedLists = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/users/user', { withCredentials: true });
-        setViewedBy(response.data[0].viewedBy);
-        console.log(response.data);
+        // Fetch the user's "viewedBy" list
+        const userResponse = await axios.get('http://localhost:5000/api/v1/users/user', {
+          withCredentials: true,
+        });
+        const viewedBy = userResponse.data[0].viewedBy;
+        setViewedBy(viewedBy); // Store the viewedBy list in state
+
+        // Fetch match percentage data
+        const matchPercentageResponse = await axios.get('http://localhost:5000/api/v1/users/compare', {
+          withCredentials: true,
+        });
+        const matchPercentages = matchPercentageResponse.data.results; // Assumes an array of match percentages
+
+        // Fetch user profile data for each user in the viewedBy list
+        const profileRequests = viewedBy.map((userId) =>
+          axios.get(`http://localhost:5000/api/v1/users/profile/${userId}`)
+        );
+        const profileResponses = await Promise.all(profileRequests);
+        const allUserData = profileResponses.map((response) => response.data);
+
+        // Combine user profile data with match percentages
+        const combinedData = allUserData.map((user) => {
+          const matchData = matchPercentages.find(
+            (match) => match.user.user === user.user // Assuming match.user.user and user.user are comparable
+          );
+          return {
+            ...user,
+            matchPercentage: matchData ? matchData.matchPercentage : null,
+          };
+        });
+
+        // Sort the combined data by matchPercentage from high to low
+        const sortedData = combinedData.sort((a, b) => b.matchPercentage - a.matchPercentage);
+
+        // Set the combined and sorted data into state
+        setViewedByData(sortedData);
+
+        // Log the final sorted data for debugging
+        console.log('Sorted Data:', sortedData);
       } catch (error) {
-        console.log(error);
+        console.log('Error fetching data:', error);
       }
     };
 
     fetchRequestedLists();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount
+ 
+  const count = viewedBy.length;
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const requests = viewedBy.map(userId =>
-          axios.get(`http://localhost:5000/api/v1/users/profile/${userId}`)
-        );
-        const responses = await Promise.all(requests);
-        const allUserData = responses.map(response => response.data);
-        setViewedByData(allUserData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchUserData();
-  }, [viewedBy]);
-
-  // console.log('viewed by data --->', viewedByData);
-  const handleRemoveRequest = async (userId) => {
-
-    try {
-
-      await axios.delete(`http://localhost:5000/api/v1/users/delete-shortlist/${userId}`, { withCredentials: true });
-      setViewedBy(prev => prev.filter(id => id !== userId));
-      setViewedByData(prev => prev.filter(user => user.user._id !== userId));
-    } catch (error) {
-      console.log('Failed to remove friend request:', error);
-    }
-  };
-  // Group users by the first letter of their first name
-  const groupedUsers = viewedByData.reduce((acc, userObj) => {
-    const firstLetter = userObj.user.firstName.charAt(0).toUpperCase();
-    if (!acc[firstLetter]) {
-      acc[firstLetter] = [];
-    }
-    acc[firstLetter].push(userObj);
-    return acc;
-  }, {});
 
   return (
     <div className="bg-deep-plum min-h-screen overflow-y-auto">
       <PageTitle icon={Search} pageTitle={"Viewed My Profile"} />
       <div className="rounded-t-4xl bg-white h-[82vh] pt-5 px-5 pb-24 md:pb-5 sm:border-2 border-deep-plum ">
-        {Object.keys(groupedUsers).sort().map(letter => (
-          <div key={letter}>
-            <h1 className="text-xl font-semibold mt-6 ms-10 sm:ms-7">{letter}</h1>
-            {groupedUsers[letter].map(userObj => {
-              const name = `${userObj.user.firstName} ${userObj.user.lastName}`;
-              const profileImageUrl = userObj.profileImage ? userObj.profileImage.url : '';
-
-              return (
-                <UserPreview
-                  key={userObj.user._id}
-                  name={name}
-                  url={profileImageUrl}
-                  bio={userObj.bio || ''}
-                  fav={true}
-                  close={close}
-                />
-              );
-            })}
-          </div>
+      <p className="text-text font-medium my-3 text-lg ">
+        <span className="text-light-purple">{count}  new profile views</span>  
+        </p>
+      
+      <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-3 grid-cols-2 gap-5">
+        {viewedByData?.map((user, i) => (
+           <Link to={`/profile/${user.user._id}?match=${user.matchPercentage}`} 
+           key={i} >
+          <MatchCardComponent
+            key={user.user._id}
+            isNew={false}
+            img={user.profileImage.url}
+            distance={user.distance}
+            name={user.user.firstName}
+            age={user.age}
+            place={user.location}
+            match={user.matchPercentage}
+          />
+          </Link>
         ))}
       </div>
-    </div>
+      </div>
+      </div>
+    
   );
 };
 
